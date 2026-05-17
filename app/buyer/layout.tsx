@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Heart,
@@ -39,8 +39,14 @@ const sidebarItems = [
 
 export default function BuyerLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -114,7 +120,7 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
             <Button
               variant="ghost"
               className="w-full justify-start text-sidebar-foreground/70 hover:text-destructive hover:bg-destructive/10"
-              onClick={logout}
+              onClick={handleLogout}
             >
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
@@ -160,7 +166,7 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
                 <Link href="/">Back to Store</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout} className="text-destructive">
+              <DropdownMenuItem onClick={handleLogout} className="text-destructive">
                 Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>
